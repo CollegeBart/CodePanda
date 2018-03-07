@@ -1,0 +1,19 @@
+﻿// Put this in [...]\Unity2017.3.1f1\Editor\Data\Resources\ScriptTemplates
+
+using UnityEngine;
+
+namespace ca.codepanda
+{
+	public class #SCRIPTNAME# : MonoBehaviour 
+	{
+		void Start () 
+		{
+			#NOTRIM#
+		}
+
+		void Update () 
+		{
+			#NOTRIM#
+		}
+	}
+}
