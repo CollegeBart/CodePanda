@@ -1,6 +1,8 @@
 ﻿// Adapted from : http://wiki.unity3d.com/index.php/Singleton
 
 using UnityEngine;
+namespace ca.codepanda
+{
 
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {
@@ -65,3 +67,4 @@ using UnityEngine;
             applicationIsQuitting = true;
         }
     }
+}

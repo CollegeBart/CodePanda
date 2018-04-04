@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+namespace ca.codepanda
+{
 
 	public class References : Singleton<References> 
 	{
@@ -47,3 +49,4 @@
             }
         }
     }
+}

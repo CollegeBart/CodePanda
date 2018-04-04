@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 
+namespace ca.codepanda
+{
     public class LookAt : MonoBehaviour
     {
         [Tooltip("Use when the forward is in the wrong direction. Useful for UI elements.")]
@@ -20,3 +22,4 @@
             }
         }
     }
+}
