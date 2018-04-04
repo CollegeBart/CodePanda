@@ -1,7 +1,13 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Pixel2018CP/CodePanda/Assets/Scenes.meta
+guid: 5d4874d5eb77d4a4c8c467bc76aa9734
+folderAsset: yes
+timeCreated: 1522797484
+=======
 guid: e38655fd82bdf5c4c9c57aa435ba1e13
 folderAsset: yes
 timeCreated: 1520388249
+>>>>>>> 8557323bccae8905050997fdb99f1c9feaedc0fc:Assets/_CodePanda/Scenes.meta
 licenseType: Free
 DefaultImporter:
   externalObjects: {}
