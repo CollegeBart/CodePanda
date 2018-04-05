@@ -23,14 +23,15 @@ namespace ca.codepanda
         //    }
         //}
 
-        private GameObject _Camera = null;
-        public GameObject _camera
+        private Camera _Camera = null;
+        public Camera _camera
         {
             get
             {
                 if (_Camera == null)
                 {
-                    _Camera = GameObject.FindGameObjectWithTag(_MAINCAMTAG);
+                    GameObject go = GameObject.FindGameObjectWithTag(_MAINCAMTAG);
+                    _Camera = go.GetComponent<Camera>();
                 }
                 return _Camera;
             }
@@ -43,7 +44,8 @@ namespace ca.codepanda
             {
                 if (_GuiAudio == null)
                 {
-                    _GuiAudio = _camera.GetComponentInChildren<AudioSource>();
+                    GameObject go = _camera.gameObject;
+                    _GuiAudio = go.GetComponentInChildren<AudioSource>();
                 }
                 return _GuiAudio;
             }
