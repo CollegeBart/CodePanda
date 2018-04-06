@@ -38,6 +38,20 @@ namespace ca.codepanda
             }
         }
 
+        private ScreenShake _ScreenShake = null;
+        public ScreenShake _screenShake
+        {
+            get
+            {
+                if(_ScreenShake == null)
+                {
+                    GameObject go = _camera.gameObject;
+                    _ScreenShake = go.GetComponent<ScreenShake>();
+                }
+                return _ScreenShake;
+            }
+        }
+
         private AudioSource _GuiAudio = null;
         public AudioSource _guiAudio
         {
