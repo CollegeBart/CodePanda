@@ -12,12 +12,12 @@ namespace ca.codepanda
         public delegate void StormStart();
         public static event StormStart OnStormStart;
 
-        public const int _mapWidth = 1980;
-        public const int _mapHeight = 1080;
+        public int _mapWidth = 20;
+        public int _mapHeight = 11;
 
         private float _scale = .1f;
-        public float _mapMidWidth;
-        public float _mapMidHeight;
+        float _mapMidWidth;
+        float _mapMidHeight;
 
         public const float _maxStormDuration = 5f;
         private float _StormDuration = 0;
@@ -69,7 +69,7 @@ namespace ca.codepanda
                     float y = Random.Range(-_mapMidHeight, _mapMidHeight);
                     Vector2 ThunderHit = new Vector2(x, y);
 
-                    GameObject go = Instantiate(_thunderPrefab);
+                    GameObject go = Instantiate(_thunderPrefab, References.Instance._dynamic);
                     go.transform.position = ThunderHit;
 
 
