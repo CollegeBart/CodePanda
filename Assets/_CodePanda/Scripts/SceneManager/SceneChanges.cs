@@ -16,6 +16,14 @@ public class SceneChanges : MonoBehaviour
             }
         }
 
+        for (int i = 0; i < 3; i++)
+        {
+            if (InputManager.Button_B(i))
+            {
+                Application.Quit();
+            }
+        }
+
     }
 }
    
