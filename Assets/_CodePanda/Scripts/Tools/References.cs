@@ -8,6 +8,7 @@ namespace ca.codepanda
         protected References() { }
 
         private const string _MAINCAMTAG = "MainCamera";
+        private const string _MAPMANAGER = "MapManager";
 
         // EXAMPLE FOR A PERSISTENT OBJECT
         //private SessionValue _Session = null;
@@ -62,6 +63,17 @@ namespace ca.codepanda
                     _GuiAudio = go.GetComponentInChildren<AudioSource>();
                 }
                 return _GuiAudio;
+            }
+        }
+
+        private MapManager _MapManager = null;
+        public MapManager _mapManager
+        {
+            get
+            {
+                GameObject go = GameObject.Find(_MAPMANAGER);
+                _MapManager = go.GetComponent<MapManager>();
+                return _MapManager;
             }
         }
     }
