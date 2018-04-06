@@ -8,6 +8,7 @@ namespace ca.codepanda
         public float _speed = 30f;
         public Rigidbody2D _rigidbody;
         private Transform _holdedObject;
+        private bool _buttonAWasReleased;
 
         void Start()
         {
@@ -17,9 +18,8 @@ namespace ca.codepanda
             }
         }
 
-        private void FixedUpdate()
+        private void Update()
         {
-
             if (InputManager.Button_A_Release(_playerIndex))
             {
                 if (_holdedObject != null)
@@ -29,6 +29,10 @@ namespace ca.codepanda
                     _holdedObject.GetComponent<Rigidbody2D>().isKinematic = false;
                 }
             }
+        }
+
+        private void FixedUpdate()
+        {         
 
             float XVelocity = InputManager.L_XAxis(_playerIndex) * _speed;
             float YVelocity = InputManager.L_YAxis(_playerIndex) * -1 * _speed;
