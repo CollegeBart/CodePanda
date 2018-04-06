@@ -7,7 +7,7 @@ namespace ca.codepanda
         public int _playerIndex;
         public float _speed = 30f;
         public Rigidbody2D _rigidbody;
-        private Collider2D _holdedObject;
+        private Transform _holdedObject;
 
         void Start()
         {
@@ -25,6 +25,7 @@ namespace ca.codepanda
                 if (_holdedObject != null)
                 {
                     _holdedObject.transform.parent = null;
+                    _holdedObject.GetComponent<Collider2D>().enabled = true;
                     _holdedObject.GetComponent<Rigidbody2D>().isKinematic = false;
                 }
             }
@@ -41,10 +42,12 @@ namespace ca.codepanda
             {
                 if (InputManager.Button_A(_playerIndex))
                 {
-                    collision.transform.parent = transform;
-                    collision.transform.position = transform.position;
-                    _holdedObject = collision;
-                    collision.GetComponent<Rigidbody2D>().isKinematic = true;
+                    var parent = collision.transform.parent;
+                    parent.GetComponent<Collider2D>().enabled = false;
+                    parent.parent = transform;
+                    parent.position = transform.position;
+                    _holdedObject = parent;
+                    collision.GetComponentInParent<Rigidbody2D>().isKinematic = true;
                 }
             }
         }
