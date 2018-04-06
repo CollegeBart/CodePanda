@@ -23,15 +23,15 @@ namespace ca.codepanda
 
                 if (InputManager.R_XAxis(i) != 0)
                 {
-                    Debug.Log(InputManager.L_XAxis(i).ToString() + " " + i);
+                    Debug.Log(InputManager.R_XAxis(i).ToString() + " " + i);
                 }
                 if (InputManager.R_YAxis(i) != 0)
                 {
-                    Debug.Log(InputManager.L_XAxis(i).ToString() + " " + i);
+                    Debug.Log(InputManager.R_XAxis(i).ToString() + " " + i);
                 }
                 if (InputManager.R_Axis(i) != Vector3.zero)
                 {
-                    Debug.Log(InputManager.L_XAxis(i).ToString() + " " + i);
+                    Debug.Log(InputManager.R_XAxis(i).ToString() + " " + i);
                 }
 
                 if (InputManager.Button_A(i))
