@@ -8,14 +8,14 @@ namespace ca.codepanda
 		{
             for (int i = 0; i < 3; i++)
             {
-                //if (InputManager.L_XAxis(i) != 0)
-                //{
-                //    Debug.Log(InputManager.L_XAxis(i).ToString() + " " + i);
-                //}
-                //if (InputManager.L_YAxis(i) != 0)
-                //{
-                //    Debug.Log(InputManager.L_YAxis(i).ToString() + " " + i);
-                //}
+                if (InputManager.L_XAxis(i) != 0)
+                {
+                    Debug.Log(InputManager.L_XAxis(i).ToString() + " " + i);
+                }
+                if (InputManager.L_YAxis(i) != 0)
+                {
+                    Debug.Log(InputManager.L_YAxis(i).ToString() + " " + i);
+                }
                 if (InputManager.L_Axis(i) != Vector3.zero)
                 {
                     Debug.Log(InputManager.L_Axis(i).ToString() + " " + i);

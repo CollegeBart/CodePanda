@@ -26,9 +26,9 @@ namespace ca.codepanda
         {
             Debug.Log("New game started");
             _isPaused = false;
-            Random.InitState(_seed);
+            //Random.InitState(_seed);
 
             References.Instance._mapManager.Init();
         }
-	}
+    }
 }

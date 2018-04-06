@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 namespace ca.codepanda
 {
@@ -15,7 +14,6 @@ namespace ca.codepanda
         public int _mapWidth = 20;
         public int _mapHeight = 11;
 
-        private float _scale = .1f;
         float _mapMidWidth;
         float _mapMidHeight;
 
@@ -37,18 +35,19 @@ namespace ca.codepanda
 
         private void Start()
         {
-            _mapMidWidth = (_mapWidth / 2) * _scale;
-            _mapMidHeight = (_mapHeight / 2) * _scale;
+            _mapMidWidth = (_mapWidth / 2);
+            _mapMidHeight = (_mapHeight / 2);
+            StartAStorm();
         }
 
         public void Init()
         {
-
         }
 
         public void StartAStorm()
         {
             StartCoroutine(Storm());
+            References.Instance._screenShake.BasicShake();
         }
 
         public IEnumerator Storm()
@@ -72,7 +71,6 @@ namespace ca.codepanda
                     GameObject go = Instantiate(_thunderPrefab, References.Instance._dynamic);
                     go.transform.position = ThunderHit;
 
-
                     _thunderDelay = Random.Range(.01f, 1f);
                 }
                 _stormDuration -= Time.deltaTime;
@@ -84,6 +82,9 @@ namespace ca.codepanda
             {
                 OnStormEnd();
             }
+
+            yield return new WaitForSeconds(15f);
+            StartAStorm();
         }
     }
 }
