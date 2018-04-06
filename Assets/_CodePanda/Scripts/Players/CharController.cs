@@ -2,15 +2,18 @@
 
 namespace ca.codepanda
 {
-    public class CharacterController : MonoBehaviour
+    public class CharController : MonoBehaviour
     {
         public int _playerIndex;
-        public float _speed;
-        private Rigidbody2D _rigidbody;
+        public float _speed = 30f;
+        public Rigidbody2D _rigidbody;
 
         void Start()
         {
-            _rigidbody = GetComponent<Rigidbody2D>();
+            if (_rigidbody == null)
+            {
+                _rigidbody = GetComponent<Rigidbody2D>();
+            }
         }
 
         private void FixedUpdate()

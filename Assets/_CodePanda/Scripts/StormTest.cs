@@ -2,7 +2,7 @@
 
 namespace ca.codepanda
 {
-    public class TestManager : MonoBehaviour
+    public class StormTest : MonoBehaviour
     {
 
         private void Start()

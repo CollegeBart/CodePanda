@@ -9,6 +9,7 @@ namespace ca.codepanda
 
         private const string _MAINCAMTAG = "MainCamera";
         private const string _MAPMANAGER = "MapManager";
+        private const string _DYNAMIC = "_Dynamic";
 
         // EXAMPLE FOR A PERSISTENT OBJECT
         //private SessionValue _Session = null;
@@ -74,6 +75,17 @@ namespace ca.codepanda
                 GameObject go = GameObject.Find(_MAPMANAGER);
                 _MapManager = go.GetComponent<MapManager>();
                 return _MapManager;
+            }
+        }
+
+        private Transform _Dynamic;
+        public Transform _dynamic
+        {
+            get
+            {
+                GameObject go = GameObject.Find(_DYNAMIC);
+                _Dynamic = go.transform;
+                return _Dynamic;
             }
         }
     }
