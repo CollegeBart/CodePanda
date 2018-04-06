@@ -8,12 +8,17 @@ public class ScreenShake : MonoBehaviour {
     // if null.
     public Transform m_CamTransform;
 
+    private const float _BasicShakeDuration = 3f;
+
     // How long the object should shake for.
     public float m_ShakeDuration = 0f;
 
     // Amplitude of the shake. A larger value shakes the camera harder.
-    public float m_ShakeAmount = 0.7f;
+    public float m_ShakeAmount = 0.15f;
+
     public float m_DecreaseFactor = 1.0f;
+
+    public AnimationCurve _curve;
 
     Vector3 originalPos;
 
@@ -30,11 +35,17 @@ public class ScreenShake : MonoBehaviour {
         originalPos = m_CamTransform.localPosition;
     }
 
+    public void BasicShake()
+    {
+        m_ShakeDuration = _BasicShakeDuration;
+    }
+
     void Update()
     {
         if (m_ShakeDuration > 0)
         {
-            m_CamTransform.localPosition = originalPos + Random.insideUnitSphere * m_ShakeAmount;
+            float thisShake = Mathf.Lerp(0, m_ShakeAmount, _curve.Evaluate(m_ShakeDuration / _BasicShakeDuration));
+            m_CamTransform.localPosition = originalPos + Random.insideUnitSphere * thisShake;
 
             m_ShakeDuration -= Time.deltaTime * m_DecreaseFactor;
         }

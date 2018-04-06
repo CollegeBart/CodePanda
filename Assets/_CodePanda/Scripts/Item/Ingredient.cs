@@ -9,13 +9,7 @@ namespace ca.codepanda
         public enum IngredientsType
         {
             Chose1 = 1,
-            Chose2 = 2,
-            Chose3 = 3,
-            Chose4 = 4,
-            Chose5 = 5,
-            Chose6 = 6, 
-            Chose7 = 7,
-            Chose8 = 8
+            Chose2 = 2
         }
 
         public IngredientsType Type;

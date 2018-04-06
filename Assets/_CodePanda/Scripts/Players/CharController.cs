@@ -1,15 +1,18 @@
 ﻿using UnityEngine;
+using System.Collections;
 
 namespace ca.codepanda
 {
     public class CharController : MonoBehaviour
     {
+        private const float _disabledDuration = 2.1f;
+        private bool _isDisabled = false;
+
         public int _playerIndex;
         public float _speed = 30f;
         public Rigidbody2D _rigidbody;
         public Animator _animator;
         private Transform _holdedObject;
-        private bool _buttonAWasReleased;
         private bool _facingRight;
 
         void Start()
@@ -18,6 +21,7 @@ namespace ca.codepanda
                 _rigidbody = GetComponent<Rigidbody2D>();
             if (_animator == null)
                 _animator = GetComponent<Animator>();
+            _isDisabled = false;
         }
 
         private void Update()
@@ -29,6 +33,7 @@ namespace ca.codepanda
                     _holdedObject.transform.parent = null;
                     _holdedObject.GetComponent<Collider2D>().enabled = true;
                     _holdedObject.GetComponent<Rigidbody2D>().isKinematic = false;
+                    _holdedObject = null;
                 }
             }
         }
@@ -45,7 +50,17 @@ namespace ca.codepanda
 
         private void OnTriggerStay2D(Collider2D collision)
         {
-            if (collision.tag.Contains("Ingredient"))
+            if (collision.tag.Contains("Player"))
+            {
+                if (InputManager.Button_X(_playerIndex))
+                {
+                    Transform parent = collision.transform.parent;
+
+                    collision.GetComponentInParent<Rigidbody2D>().AddForce(_rigidbody.velocity * 10);
+                }
+            }
+
+            if (collision.tag.Contains("Ingredient") && _holdedObject == null)
             {
                 if (InputManager.Button_A(_playerIndex))
                 {
@@ -55,6 +70,15 @@ namespace ca.codepanda
                     parent.position = transform.position;
                     _holdedObject = parent;
                     collision.GetComponentInParent<Rigidbody2D>().isKinematic = true;
+                }
+            }
+
+            if (collision.tag.Contains("Thunder"))
+            {
+                if (!_isDisabled)
+                {
+                    StopAllCoroutines();
+                    StartCoroutine(DisableCoroutine());
                 }
             }
         }
@@ -73,7 +97,7 @@ namespace ca.codepanda
                 goingUp = true;
             else if (YVelocity < 0)
                 goingDown = true;
-            
+
 
             _animator.SetBool("WalkingUp", goingUp);
             _animator.SetBool("WalkingDown", goingDown);
@@ -85,6 +109,16 @@ namespace ca.codepanda
             Vector2 localScale = gameObject.transform.localScale;
             localScale.x *= -1;
             transform.localScale = localScale;
+        }
+
+        private IEnumerator DisableCoroutine()
+        {
+            float speed = _speed;
+            _isDisabled = true;
+            _speed = 0;
+            yield return new WaitForSeconds(_disabledDuration);
+            _isDisabled = false;
+            _speed = speed;
         }
     }
 }
