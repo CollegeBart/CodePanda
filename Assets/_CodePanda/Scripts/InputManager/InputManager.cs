@@ -35,6 +35,12 @@ namespace ca.codepanda
         public static bool Button_X(int index) { return Input.GetButtonDown(x[index]); }
         public static bool Button_Y(int index) { return Input.GetButtonDown(y[index]); }
 
+
+        public static bool Button_A_Release(int index) { return Input.GetButtonUp(a[index]); }
+        public static bool Button_B_Release(int index) { return Input.GetButtonUp(b[index]); }
+        public static bool Button_X_Release(int index) { return Input.GetButtonUp(x[index]); }
+        public static bool Button_Y_Release(int index) { return Input.GetButtonUp(y[index]); }
+
         public static bool Trigger_Left(int index) { return Input.GetButtonDown(t_l[index]); }
         public static bool Trigger_Right(int index) { return Input.GetButtonDown(t_r[index]); }
 
