@@ -4,34 +4,21 @@ namespace ca.codepanda
 {
     public class CharacterController : MonoBehaviour
     {
-        public int playerNumber;
-        public float speed;
-        private Rigidbody2D rigidbody2D;
+        public int _playerIndex;
+        public float _speed;
+        private Rigidbody2D _rigidbody;
 
         void Start()
         {
-            rigidbody2D = GetComponent<Rigidbody2D>();
-
-        }
-
-        void Update()
-        {
-
+            _rigidbody = GetComponent<Rigidbody2D>();
         }
 
         private void FixedUpdate()
         {
-            if (playerNumber==1)
-            {
-                Debug.Log(InputManager.L_XAxis(playerNumber));
-                Debug.Log(InputManager.L_YAxis(playerNumber));
+            float XVelocity = InputManager.L_XAxis(_playerIndex) * _speed;
+            float YVelocity = InputManager.L_YAxis(_playerIndex) * -1 * _speed;
 
-            }
-
-            float XVelocity = InputManager.L_XAxis(playerNumber) * speed;
-            float YVelocity = InputManager.L_YAxis(playerNumber) * -1 * speed;
-
-            rigidbody2D.velocity = new Vector2(XVelocity, YVelocity);
+            _rigidbody.velocity = new Vector2(XVelocity, YVelocity);
         }
     }
 }
