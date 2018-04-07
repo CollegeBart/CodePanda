@@ -153,7 +153,6 @@ namespace ca.codepanda
                     }
                     var spritePlaceholder = recipesSpriteContainer.transform.Find("PlaceHolderIngredient" + (i + 1));
                     var spriteRenderer = spritePlaceholder.gameObject.GetComponent<SpriteRenderer>();
-                    spriteRenderer.sprite = ingredientSprite;
                 }
             }
         }
