@@ -9,7 +9,10 @@ namespace ca.codepanda
 
         private const string _MAINCAMTAG = "MainCamera";
         private const string _MAPMANAGER = "MapManager";
+        private const string _ITEMMANAGER = "ItemManager";
+        private const string _CHARACTERMANAGER = "CharacterManager";
         private const string _DYNAMIC = "_Dynamic";
+		private const string _GAMEMANAGER = "GameManager";
 
         // EXAMPLE FOR A PERSISTENT OBJECT
         //private SessionValue _Session = null;
@@ -78,6 +81,28 @@ namespace ca.codepanda
             }
         }
 
+        private ItemManager _ItemManager = null;
+        public ItemManager _itemManager
+        {
+            get
+            {
+                GameObject go = GameObject.Find(_ITEMMANAGER);
+                _ItemManager = go.GetComponent<ItemManager>();
+                return _ItemManager;
+            }
+        }
+
+        private CharactersManager _CharacterManager = null;
+        public CharactersManager _characterManager
+        {
+            get
+            {
+                GameObject go = GameObject.Find(_CHARACTERMANAGER);
+                _CharacterManager = go.GetComponent<CharactersManager>();
+                return _CharacterManager;
+            }
+        }
+
         private Transform _Dynamic;
         public Transform _dynamic
         {
@@ -86,6 +111,17 @@ namespace ca.codepanda
                 GameObject go = GameObject.Find(_DYNAMIC);
                 _Dynamic = go.transform;
                 return _Dynamic;
+            }
+        }
+		
+		private GameManager _GameManager = null;
+        public GameManager _gameManager
+        {
+            get
+            {
+                GameObject go = GameObject.Find(_GAMEMANAGER);
+                _GameManager = go.GetComponent<GameManager>();
+                return _GameManager;
             }
         }
     }

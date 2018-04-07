@@ -1,34 +1,63 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace ca.codepanda
 {
-	public class GameManager : Singleton<GameManager>
-    {
-        // Prevents the creator from being used
-        protected GameManager() { }
+	public class GameManager : MonoBehaviour
+    { 
+        public delegate void PauseEvent();
+        public static event PauseEvent OnPauseEvent;
+
+        [SerializeField]private Text teamScore1;
+        [SerializeField]private Text teamScore2;
+
+        private int[] _scores = { 0, 0 };
 
         private const int _seed = 100;
 
-        private bool _IsPaused;
-        public bool _isPaused
+        private bool _isPaused;
+
+        public void SetPause(bool b)
         {
-            get
+            _isPaused = b;
+            if (OnPauseEvent != null)
             {
-                return _IsPaused;
-            }
-            set
-            {
-                _IsPaused = value;
+                OnPauseEvent();
             }
         }
 
-        public void Init()
+        public bool GetPause()
         {
-            Debug.Log("New game started");
-            _isPaused = false;
-            //Random.InitState(_seed);
+            return _isPaused;
+        }
 
-            References.Instance._mapManager.Init();
+        private void TogglePause()
+        {
+            SetPause(!_isPaused);
+        }
+
+        public void EndGame()
+        {
+            Debug.Log("ENDGAME");
+        }
+
+        private void Start()
+        {
+            _scores = new int[2] { 0, 0 };
+            UpdateScoreText();
+            _isPaused = false;
+        }
+
+        public void AddScore(int scoreAmount, int teamIndex)
+        {
+            _scores[teamIndex] += scoreAmount;
+            UpdateScoreText();
+        }
+
+        public void UpdateScoreText()
+        {
+            teamScore1.text = "RED : " + _scores[0].ToString();
+            teamScore2.text = "BLUE : " + _scores[1].ToString();
         }
     }
 }
