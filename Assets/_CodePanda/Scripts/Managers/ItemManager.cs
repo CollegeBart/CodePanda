@@ -73,14 +73,19 @@ namespace ca.codepanda
                         RefreshRecipes();
                     }
                 }
+                else if ((type._type != _recipes[0]._ingredients[_cauldronIndexes[teamIndex]]))
+                {
+                    if (_cauldronIndexes[teamIndex]>0)
+                        _cauldronIndexes[teamIndex]--;                    
+                }
             }
             else if (cauldron != _cauldrons[teamIndex])
             {
                 if (type._type != _recipes[0]._ingredients[_cauldronIndexes[teamIndex]])
                 {
-                    if (_cauldronIndexes[(teamIndex + 1) % 2] > 0)                    
+                    if (_cauldronIndexes[(teamIndex + 1) % 2] > 0)
                         _cauldronIndexes[(teamIndex + 1) % 2]--;
-                    
+
                     rewardScore = 25;
                 }
             }
@@ -117,7 +122,7 @@ namespace ca.codepanda
                 _newItem = UnityEngine.Random.Range(0, _prefabs.Length);
 
             GameObject go = Instantiate(_prefabs[_newItem], References.Instance._dynamic);
-            int _newPos = UnityEngine.Random.Range(0, _spawnPositions.Length-1);
+            int _newPos = UnityEngine.Random.Range(0, _spawnPositions.Length - 1);
 
             if (!_recipes[0]._ingredients.Contains(go.GetComponent<Item>()._type))
                 _timesSpawnedItemWasNotInTheRecipe += 1;
@@ -131,7 +136,7 @@ namespace ca.codepanda
         {
             var recipesSpriteContainer = GameObject.FindGameObjectWithTag(_RECIPES_TAG);
 
-            if (_recipes.Count==0)
+            if (_recipes.Count == 0)
                 recipesSpriteContainer.GetComponent<Animator>().SetTrigger("Open");
             else
                 recipesSpriteContainer.GetComponent<Animator>().SetTrigger("FlipPage");
