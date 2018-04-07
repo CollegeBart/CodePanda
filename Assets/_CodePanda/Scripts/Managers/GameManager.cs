@@ -13,8 +13,10 @@ namespace ca.codepanda
         public float PandaSpawnDelay = 60f;
         public float NextGoldenPandaTime;
 
-        [SerializeField] private Text teamScore1;
-        [SerializeField] private Text teamScore2;
+        [SerializeField]
+        private Text teamScore1;
+        [SerializeField]
+        private Text teamScore2;
 
         private int[] _scores = { 0, 0 };
 
@@ -26,7 +28,7 @@ namespace ca.codepanda
         {
             _isPaused = b;
             if (OnPauseEvent != null)
-                OnPauseEvent();            
+                OnPauseEvent();
         }
 
         public bool GetPause()
@@ -49,7 +51,7 @@ namespace ca.codepanda
             _scores = new int[2] { 0, 0 };
             UpdateScoreText();
             _isPaused = false;
-            
+
             NextGoldenPandaTime = GameTime - PandaSpawnDelay;
         }
 
@@ -61,12 +63,12 @@ namespace ca.codepanda
                 References.Instance._itemManager.SpawnGoldenPanda();
                 NextGoldenPandaTime = GameTime - PandaSpawnDelay;
             }
-            if (GameTime <= 0)            
-                EndGame();    
-            
-            for(int i = 0; i < 3; i++)
+            if (GameTime <= 0)
+                EndGame();
+
+            for (int i = 0; i < 3; i++)
             {
-                if(InputManager.Button_Start(i))
+                if (InputManager.Button_Start(i))
                 {
                     _isPaused = !_isPaused;
                     if (_isPaused)
@@ -77,7 +79,7 @@ namespace ca.codepanda
                     {
                         Time.timeScale = 1;
                     }
-                }                      
+                }
             }
             minutes = Mathf.Floor(GameTime / 60);
             seconds = Mathf.RoundToInt(GameTime % 60);

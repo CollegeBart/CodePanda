@@ -3,7 +3,8 @@ using UnityEngine.UI;
 
 namespace ca.codepanda
 {
-    public class Timer : MonoBehaviour {
+    public class Timer : MonoBehaviour
+    {
 
         [SerializeField]
         private Text m_Timer;
@@ -20,7 +21,7 @@ namespace ca.codepanda
         {
             _currentTimer -= Time.deltaTime;
             _time = References.Instance._gameManager.minutes.ToString() + ":" + References.Instance._gameManager.seconds.ToString();
-            if(_currentTimer <= 0 && _inAStorm == true)
+            if (_currentTimer <= 0 && _inAStorm == true)
             {
                 _currentTimer = _stormDuration;
                 m_Timer.color = Color.cyan;
