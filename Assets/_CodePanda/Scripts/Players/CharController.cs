@@ -59,10 +59,10 @@ namespace ca.codepanda
             _buttonXDown = InputManager.Button_X(_playerIndex);
             _rightTriggerDown = InputManager.Trigger_Right(_playerIndex);
 
-            if (!InputManager.Trigger_Right(_playerIndex))
-                ReleaseItem(false);            
-            if (_buttonADown)            
+            if (_buttonADown)
                 Dash();
+            if (InputManager.Trigger_Right_Release(_playerIndex))
+                ReleaseItem(false);          
             
             SetSpriteDirection(_xVelocity, _yVelocity, _velocity.magnitude);
         }
@@ -107,13 +107,8 @@ namespace ca.codepanda
                 _heldObject.GetComponent<Rigidbody2D>().isKinematic = false;
 
                 if (dashing)
-                    _heldObject.GetComponent<Item>().StartPassThroughCoroutine();
-
-
-                if (dashing)
-                    _heldObject.GetComponent<Item>().StartPassThroughCoroutine();
+                    _heldObject.GetComponent<Item>().StartPassThroughCoroutine();               
                 
-
                 if (_cauldron != null)
                 {
                     References.Instance._itemManager.FillCauldron(_cauldron.parent, _heldObject.gameObject.GetComponent<Item>(), _playerIndex);
