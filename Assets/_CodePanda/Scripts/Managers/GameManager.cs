@@ -82,7 +82,8 @@ namespace ca.codepanda
                 }
             }
             minutes = Mathf.Floor(GameTime / 60);
-            seconds = Mathf.RoundToInt(GameTime % 60);
+            seconds = Mathf.Floor(GameTime % 60);
+           
         }
 
         public void AddScore(int scoreAmount, int teamIndex)
