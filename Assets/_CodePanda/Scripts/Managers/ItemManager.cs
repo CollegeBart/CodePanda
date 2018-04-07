@@ -16,7 +16,9 @@ namespace ca.codepanda
             Sheep,
             Thunder,
             Tornado,
-            Wood
+            Wood,
+            GoldenPanda
+
         }
 
         private GameManager _gameManager;
@@ -34,6 +36,8 @@ namespace ca.codepanda
         public Transform[] _cauldrons;
         public SpriteRenderer[] _cauldronSprites;
         private int _timesSpawnedItemWasNotInTheRecipe;
+
+        public GameObject GoldenPandaPrefab;
 
         private void Start()
         {
@@ -55,18 +59,19 @@ namespace ca.codepanda
             int teamIndex = (playerIndex) % 2;
             if (cauldron == _cauldrons[teamIndex])
             {
-                if (type._type == _recipes[0]._ingredients[_cauldronIndexes[teamIndex]])
+                if (type._type == _recipes[0]._ingredients[_cauldronIndexes[teamIndex]] || type._type == Items.GoldenPanda)
                 {
-                    if (_cauldronIndexes[teamIndex] != _recipes[0]._ingredients.Count-1)
+                    if (_cauldronIndexes[teamIndex] != _recipes[0]._ingredients.Count - 1)
+                    {
                         _cauldronIndexes[teamIndex]++;
+                        rewardScore = 50;
+                    }
                     else
                     {
                         _cauldronIndexes = new int[2] { 0, 0 };
-
                         rewardScore += 50 * _recipes[0]._ingredients.Count;
                         RefreshRecipes();
                     }
-                    rewardScore = 50;
                 }
             }
             else if (cauldron != _cauldrons[teamIndex])
@@ -85,6 +90,7 @@ namespace ca.codepanda
             UpdateCauldronSprites();
         }
 
+
         private void UpdateCauldronSprites()
         {
             var ingredientSprite = _prefabs[(int)_recipes[0]._ingredients[_cauldronIndexes[0]]].GetComponentInChildren<SpriteRenderer>().sprite;
@@ -92,6 +98,13 @@ namespace ca.codepanda
 
             ingredientSprite = _prefabs[(int)_recipes[0]._ingredients[_cauldronIndexes[1]]].GetComponentInChildren<SpriteRenderer>().sprite;
             _cauldronSprites[1].sprite = ingredientSprite;
+        }
+
+        internal void SpawnGoldenPanda()
+        {
+            GameObject go = Instantiate(GoldenPandaPrefab, References.Instance._dynamic);
+            int _newPos = 10;
+            go.transform.position = _spawnPositions[_newPos].position;
         }
 
         public void SpawnNewItem()
@@ -104,7 +117,7 @@ namespace ca.codepanda
                 _newItem = UnityEngine.Random.Range(0, _prefabs.Length);
 
             GameObject go = Instantiate(_prefabs[_newItem], References.Instance._dynamic);
-            int _newPos = UnityEngine.Random.Range(0, _spawnPositions.Length);
+            int _newPos = UnityEngine.Random.Range(0, _spawnPositions.Length-1);
 
             if (!_recipes[0]._ingredients.Contains(go.GetComponent<Item>()._type))
                 _timesSpawnedItemWasNotInTheRecipe += 1;

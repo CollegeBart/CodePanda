@@ -3,13 +3,16 @@ using UnityEngine.UI;
 
 namespace ca.codepanda
 {
-	public class GameManager : MonoBehaviour
-    { 
+    public class GameManager : MonoBehaviour
+    {
         public delegate void PauseEvent();
         public static event PauseEvent OnPauseEvent;
+        public float GameTime = 180f;
+        public float PandaSpawnDelay = 3f;
+        public float NextGoldenPandaTime;
 
-        [SerializeField]private Text teamScore1;
-        [SerializeField]private Text teamScore2;
+        [SerializeField] private Text teamScore1;
+        [SerializeField] private Text teamScore2;
 
         private int[] _scores = { 0, 0 };
 
@@ -21,9 +24,7 @@ namespace ca.codepanda
         {
             _isPaused = b;
             if (OnPauseEvent != null)
-            {
-                OnPauseEvent();
-            }
+                OnPauseEvent();            
         }
 
         public bool GetPause()
@@ -46,6 +47,19 @@ namespace ca.codepanda
             _scores = new int[2] { 0, 0 };
             UpdateScoreText();
             _isPaused = false;
+            NextGoldenPandaTime = GameTime - PandaSpawnDelay;
+        }
+
+        private void Update()
+        {
+            GameTime -= Time.deltaTime;
+            if (GameTime <= NextGoldenPandaTime)
+            {
+                References.Instance._itemManager.SpawnGoldenPanda();
+                NextGoldenPandaTime = GameTime - PandaSpawnDelay;
+            }
+            if (GameTime <= 0)            
+                EndGame();                            
         }
 
         public void AddScore(int scoreAmount, int teamIndex)
