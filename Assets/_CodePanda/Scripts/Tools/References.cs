@@ -7,6 +7,8 @@ namespace ca.codepanda
 		// Prevents the creator from being used
         protected References() { }
 
+        public int state = 0;
+
         private const string _MAINCAMTAG = "MainCamera";
         private const string _MAPMANAGER = "MapManager";
         private const string _ITEMMANAGER = "ItemManager";

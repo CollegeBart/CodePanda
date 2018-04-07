@@ -8,7 +8,7 @@ namespace ca.codepanda
     {
         private const int _numberOfRecipes = 1;
         private const int _minItemsInRecipes = 2;
-        private const int _maxItemsInRecipes = 4;
+        public const int _maxItemsInRecipes = 4;
 
 
         public void Refresh()

@@ -8,27 +8,23 @@ namespace ca.codepanda
         public delegate void PauseEvent();
         public static event PauseEvent OnPauseEvent;
         public float GameTime = 180f;
-        public float minutes;
-        public float seconds;
-        public float PandaSpawnDelay = 60f;
-        public float NextGoldenPandaTime;
+        public float PandaSpawnDelay = 30f;
+        private float NextGoldenPandaTime;
 
-        [SerializeField]
-        private Text teamScore1;
-        [SerializeField]
-        private Text teamScore2;
+        [SerializeField] private Text teamScore1;
+        [SerializeField] private Text teamScore2;
 
         private int[] _scores = { 0, 0 };
 
         private const int _seed = 100;
 
-        private bool _isPaused = false;
+        private bool _isPaused;
 
         public void SetPause(bool b)
         {
             _isPaused = b;
             if (OnPauseEvent != null)
-                OnPauseEvent();
+                OnPauseEvent();            
         }
 
         public bool GetPause()
@@ -51,7 +47,6 @@ namespace ca.codepanda
             _scores = new int[2] { 0, 0 };
             UpdateScoreText();
             _isPaused = false;
-
             NextGoldenPandaTime = GameTime - PandaSpawnDelay;
         }
 
@@ -63,27 +58,8 @@ namespace ca.codepanda
                 References.Instance._itemManager.SpawnGoldenPanda();
                 NextGoldenPandaTime = GameTime - PandaSpawnDelay;
             }
-            if (GameTime <= 0)
-                EndGame();
-
-            for (int i = 0; i < 3; i++)
-            {
-                if (InputManager.Button_Start(i))
-                {
-                    _isPaused = !_isPaused;
-                    if (_isPaused)
-                    {
-                        Time.timeScale = 0;
-                    }
-                    else
-                    {
-                        Time.timeScale = 1;
-                    }
-                }
-            }
-            minutes = Mathf.Floor(GameTime / 60);
-            seconds = Mathf.Floor(GameTime % 60);
-           
+            if (GameTime <= 0)            
+                EndGame();                            
         }
 
         public void AddScore(int scoreAmount, int teamIndex)

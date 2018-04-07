@@ -144,12 +144,15 @@ namespace ca.codepanda
             _recipes.Refresh();
             foreach (Recipe recipe in _recipes)
             {
-                for (int i = 0; i < recipe._ingredients.Count; i++)
+                for (int i = 0; i < Recipes._maxItemsInRecipes ; i++)
                 {
-                    var ingredientSprite = _prefabs[(int)recipe._ingredients[i]].GetComponentInChildren<SpriteRenderer>().sprite;
+                    Sprite ingredientSprite = null;
+                    if (i < recipe._ingredients.Count)
+                    {
+                        ingredientSprite = _prefabs[(int)recipe._ingredients[i]].GetComponentInChildren<SpriteRenderer>().sprite;
+                    }
                     var spritePlaceholder = recipesSpriteContainer.transform.Find("PlaceHolderIngredient" + (i + 1));
                     var spriteRenderer = spritePlaceholder.gameObject.GetComponent<SpriteRenderer>();
-                    spriteRenderer.sprite = ingredientSprite;
                 }
             }
         }
