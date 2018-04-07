@@ -8,7 +8,7 @@ namespace ca.codepanda
         public delegate void PauseEvent();
         public static event PauseEvent OnPauseEvent;
         public float GameTime = 180f;
-        public float PandaSpawnDelay = 3f;
+        public float PandaSpawnDelay = 30f;
         public float NextGoldenPandaTime;
 
         [SerializeField] private Text teamScore1;

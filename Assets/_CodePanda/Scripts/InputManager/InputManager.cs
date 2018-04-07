@@ -42,7 +42,7 @@ namespace ca.codepanda
         public static bool Button_Y_Release(int index) { return Input.GetButtonUp(y[index]); }
 
         public static bool Trigger_Left(int index) { return Input.GetButtonDown(t_l[index]); }
-        public static bool Trigger_Right(int index) { return Input.GetButtonDown(t_r[index]); }
+        public static bool Trigger_Right(int index) { return Input.GetAxis(t_r[index]) == 1; }
 
         public static bool Button_Start(int index) { return Input.GetButtonDown(start[index]); }
 

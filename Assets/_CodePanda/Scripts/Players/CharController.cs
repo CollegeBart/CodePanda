@@ -32,8 +32,8 @@ namespace ca.codepanda
         private Vector2 _velocity = Vector3.zero;
 
         private bool _buttonADown;
-        private bool _triggerRDown;
-
+        private bool _buttonXDown;
+        private bool _rightTriggerDown;
         private Coroutine _disabledRoutine;
 
         private bool _dashOnCooldown = false;
@@ -56,11 +56,12 @@ namespace ca.codepanda
         public void CustomUpdate()
         {
             _buttonADown = InputManager.Button_A(_playerIndex);
-            _triggerRDown = InputManager.Button_X(_playerIndex);
+            _buttonXDown = InputManager.Button_X(_playerIndex);
+            _rightTriggerDown = InputManager.Trigger_Right(_playerIndex);
 
-            if (InputManager.Button_A_Release(_playerIndex))
+            if (!InputManager.Trigger_Right(_playerIndex))
                 ReleaseItem(false);            
-            if (InputManager.Button_Y(_playerIndex))            
+            if (_buttonADown)            
                 Dash();
             
             SetSpriteDirection(_xVelocity, _yVelocity, _velocity.magnitude);
@@ -107,7 +108,11 @@ namespace ca.codepanda
 
                 if (dashing)
                     _heldObject.GetComponent<Item>().StartPassThroughCoroutine();
-                            
+
+
+                if (dashing)
+                    _heldObject.GetComponent<Item>().StartPassThroughCoroutine();
+                
 
                 if (_cauldron != null)
                 {
@@ -146,7 +151,7 @@ namespace ca.codepanda
             {
                 if (collision.tag.Contains("Player") && collision != GetComponent<Collider2D>())
                 {
-                    if (_triggerRDown && _heldObject == null)
+                    if (_buttonXDown && _heldObject == null)
                     {
                         var vectorPush = (collision.transform.position - transform.position).normalized;
                         collision.GetComponent<Rigidbody2D>().AddForce(vectorPush * CharactersManager._pushSpeed);
@@ -156,7 +161,7 @@ namespace ca.codepanda
 
                 if (collision.tag.Contains("Ingredient") && _heldObject == null)
                 {
-                    if (_buttonADown)
+                    if (_rightTriggerDown)
                     {
                         collision.GetComponent<Collider2D>().enabled = false;
                         var parent = collision.transform.parent;
