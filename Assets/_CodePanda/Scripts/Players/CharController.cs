@@ -124,7 +124,7 @@ namespace ca.codepanda
 
         private void Dash()
         {
-            if (!_dashOnCooldown)
+            if (!_dashOnCooldown  && !_isDisabled)
             {
                 _dashOnCooldown = true;
                 var vectorPush = (_velocity).normalized;
@@ -156,6 +156,10 @@ namespace ca.codepanda
 
                 if (collision.tag.Contains("Ingredient") && _heldObject == null)
                 {
+                    if (_buttonXDown && _heldObject == null)
+                    {
+                        StartCoroutine(PushItem(collision));
+                    }
                     if (_rightTriggerDown)
                     {
                         collision.GetComponent<Collider2D>().enabled = false;
@@ -170,6 +174,15 @@ namespace ca.codepanda
             }
         }
 
+        private IEnumerator PushItem(Collider2D collision)
+        {
+            var vectorPush = (collision.transform.position - transform.position).normalized;
+            collision.GetComponentInParent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
+            collision.GetComponentInParent<Rigidbody2D>().AddForce(vectorPush * CharactersManager._pushSpeed);
+            yield return new WaitForSeconds(0.25f);
+            collision.GetComponentInParent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+        }
+
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (!_isDisabled)
@@ -181,7 +194,7 @@ namespace ca.codepanda
                         StopCoroutine(_disabledRoutine);
 
                     }
-                    _disabledRoutine = StartCoroutine(DisableCoroutine(_disabledDuration));
+                    DisableAnim();
                 }
 
                 if (collision.tag.Contains("Cauldron"))
@@ -204,36 +217,46 @@ namespace ca.codepanda
 
         private void SetSpriteDirection(float XVelocity, float YVelocity, float velocity)
         {
-            _animator.SetFloat("Velocity", velocity);
-            ANIMSTATE newState = _previousAnimState;
-            if (Mathf.Abs(XVelocity) > Mathf.Abs(YVelocity))
+            if (!_isDisabled)
             {
-                if (XVelocity < 0)
+                _animator.SetFloat("Velocity", velocity);
+                ANIMSTATE newState = _previousAnimState;
+                if (newState != ANIMSTATE.Hurt)
                 {
-                    newState = ANIMSTATE.Left;
+                    if (Mathf.Abs(XVelocity) > Mathf.Abs(YVelocity))
+                    {
+                        if (XVelocity < 0)
+                        {
+                            newState = ANIMSTATE.Left;
+                        }
+                        else if (XVelocity > 0)
+                        {
+                            newState = ANIMSTATE.Right;
+                        }
+                    }
+                    else
+                    {
+                        if (YVelocity < 0)
+                        {
+                            newState = ANIMSTATE.Down;
+                        }
+                        else if (YVelocity > 0)
+                        {
+                            newState = ANIMSTATE.Up;
+                        }
+                    }
                 }
-                else if(XVelocity > 0)
-                {
-                    newState = ANIMSTATE.Right;
-                }
-            }
-            else
-            {
-                if (YVelocity < 0)
+                else
                 {
                     newState = ANIMSTATE.Down;
                 }
-                else if (YVelocity > 0)
-                {
-                    newState = ANIMSTATE.Up;
-                }
-            }
 
-            _previousAnimState = newState;
-            SetAnimInt((int)newState);
-            if (_heldObject != null)
-            {
-                SortHeldObject(newState);
+                _previousAnimState = newState;
+                SetAnimInt((int)newState);
+                if (_heldObject != null)
+                {
+                    SortHeldObject(newState);
+                }
             }
         }
 
@@ -267,17 +290,31 @@ namespace ca.codepanda
             _animator.SetInteger("State", i);
         }
 
-        private IEnumerator DisableCoroutine(float duration)
+        public void DisableAnim()
         {
-            float speed = _speed;
+            StartCoroutine(SlowDown());
+            ReleaseItem(false);
             _isDisabled = true;
-            _speed = 0;
             _animator.SetInteger("State", (int)ANIMSTATE.Hurt);
-            yield return new WaitForSeconds(duration);
+            _previousAnimState = ANIMSTATE.Hurt;
+        }
+
+        private IEnumerator SlowDown()
+        {
+            float t = 0.5f;
+            while (t < 1)
+            {
+                _speed = Mathf.Lerp(CharactersManager._baseSpeed, 0, t);
+                t += Time.deltaTime;
+                yield return null;
+            }
+            _speed = 0;
+        }
+
+        public void DisableDone()
+        {
             _isDisabled = false;
-            _speed = speed;
-            _previousAnimState = ANIMSTATE.Down;
-            SetAnimInt((int)ANIMSTATE.Down);
+            _speed = CharactersManager._baseSpeed;
         }
     }
 }

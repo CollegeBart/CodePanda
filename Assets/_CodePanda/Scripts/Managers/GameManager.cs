@@ -82,7 +82,7 @@ namespace ca.codepanda
                 }
             }
             minutes = Mathf.Floor(GameTime / 60);
-            seconds = Mathf.Floor(GameTime % 60);
+            seconds = Mathf.Floor (GameTime % 60);
            
         }
 
@@ -96,6 +96,16 @@ namespace ca.codepanda
         {
             teamScore1.text = "RED : " + _scores[0].ToString();
             teamScore2.text = "BLUE : " + _scores[1].ToString();
+        }
+
+        public float Minutes()
+        {
+            return Mathf.Floor(GameTime / 60);
+        }
+
+        public float Seconds()
+        {
+            return Mathf.Floor(GameTime % 60);
         }
     }
 }

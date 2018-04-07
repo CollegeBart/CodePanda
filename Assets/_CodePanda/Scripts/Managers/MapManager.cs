@@ -39,6 +39,12 @@ namespace ca.codepanda
         {
             _mapMidWidth = (_mapWidth / 2);
             _mapMidHeight = (_mapHeight / 2);
+            StartCoroutine(FirstStorm());
+        }
+
+        private IEnumerator FirstStorm()
+        {
+            yield return new WaitForSeconds(_StormDelay);
             StartAStorm();
         }
 
@@ -99,6 +105,47 @@ namespace ca.codepanda
 
             yield return new WaitForSeconds(_StormDelay);
             StartAStorm();
+        }
+
+        public void EndGameStorm()
+        {
+            StopAllCoroutines();
+            StartCoroutine(EndGameStormRoutine());
+        }
+
+        private IEnumerator EndGameStormRoutine()
+        {
+            if (OnStormStart != null)
+            {
+                OnStormStart();
+            }
+
+            _stormDuration = _maxStormDuration * 2;
+            float _thunderDelay = 0;
+
+            while (_stormDuration > 0)
+            {
+                if (_thunderDelay <= 0)
+                {
+                    float x = Random.Range(-_mapMidWidth, _mapMidWidth);
+                    float y = Random.Range(-_mapMidHeight, _mapMidHeight);
+                    Vector2 ThunderHit = new Vector2(x, y);
+
+                    GameObject go = Instantiate(_thunderPrefab, References.Instance._dynamic);
+                    go.transform.position = ThunderHit;
+
+                    _thunderDelay = Random.Range(.01f, .25f);
+                }
+
+                _stormDuration -= Time.deltaTime;
+                _thunderDelay -= Time.deltaTime;
+                yield return null;
+            }
+
+            if (OnStormEnd != null)
+            {
+                OnStormEnd();
+            }
         }
     }
 }

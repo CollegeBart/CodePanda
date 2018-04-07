@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,50 +7,121 @@ namespace ca.codepanda
 {
 	public class Transition : MonoBehaviour 
 	{
-        public GameObject[] _players;
-        public AnimatorAutoSetState[] _animators;
-        List<int> _activatedIndexes = new List<int>();
+        private int _state = 0;
+        private string _sceneName = "CodePanda2018 - Alex";
 
-		void Update () 
+        public Animator _anim;
+
+        public AnimatorAutoSetState[] _animators;
+        private bool[] _activated;
+
+        public SpriteRenderer[] _rends;
+        public Sprite _startToStart;
+        public Sprite _aToPlay;
+        public Sprite _bToQuit;
+
+        private void Start()
+        {
+            _activated = new bool[] { false, false, false, false };
+            if (References.Instance.state == 1)
+            {
+                MenuIn();
+            }
+        }
+
+        void Update ()
 		{
             for (int i = 0; i < 3; i++)
             {
 			    if (InputManager.Button_A(i))
                 {
-                    if (!_activatedIndexes.Contains(i))
+                    if (_state == 1)
                     {
-                        _activatedIndexes.Add(i);
                         Activate(i);
                     }
-                    else
-                    {
-                        Bounce(i);
-                    }
                 }
+
                 if (InputManager.Button_B(i))
                 {
-                    if (_activatedIndexes.Contains(i))
+                    if (_state == 1 && !_activated[i])
                     {
-                        _activatedIndexes.Remove(i);
+                        MenuOut();
+                    }
+                    else if (_state == 1)
+                    {
                         Quit(i);
+                    }
+                }
+
+                if (InputManager.Button_Start(i))
+                {
+                    if (_state == 1)
+                    {
+                        bool hasPlayer = false;
+                        for (int j = 0; j < 4; j++)
+                        {
+                            if (_activated[j] == true)
+                            {
+                                hasPlayer = true;
+                                break;
+                            }
+                        }
+                        if (hasPlayer)
+                        {
+                            MenuPlay();
+                        }
+                    }
+                    else if (_state == 0)
+                    {
+                        MenuIn();
+                    }
+                    else if (_state == 2)
+                    {
+                        ChangeScene();
                     }
                 }
             }
 		}
 
-        private void Activate(int index)
+        private void MenuIn()
         {
-            _animators[index].Activate();
-            Debug.Log("Talk to game manager to add this player to players");
+            for (int i = 0; i < 4; i++)
+            {
+                Quit(i);
+            }
+            _state = 1;
+            _anim.SetInteger("state", 1);
         }
 
-        private void Bounce(int index)
+        private void MenuOut()
         {
+            _state = 0;
+            _anim.SetInteger("state", 0);
+        }
+
+        private void MenuPlay()
+        {
+            _state = 2;
+            _anim.SetInteger("state", 2);
+        }
+
+        private void ChangeScene()
+        {
+            References.Instance.state = 1;
+            SceneManager.LoadScene(_sceneName);
+        }
+
+        private void Activate(int index)
+        {
+            _rends[index].sprite = _bToQuit;
+            _activated[index] = true;
             _animators[index].Activate();
         }
 
         private void Quit(int index)
         {
+            _rends[index].sprite = _aToPlay;
+            _activated[index] = false;
             _animators[index].Deactivate();
         }
     }

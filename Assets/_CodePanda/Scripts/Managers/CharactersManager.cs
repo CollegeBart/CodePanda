@@ -9,6 +9,8 @@ namespace ca.codepanda
         public const int _dashSpeed = 1500;
         public const int _pushSpeed = 2500;
 
+        public const float _baseSpeed = 100f;
+
         public GameObject[] _objects;
         public Transform[] _transforms;
         public CharController[] _controllers;
