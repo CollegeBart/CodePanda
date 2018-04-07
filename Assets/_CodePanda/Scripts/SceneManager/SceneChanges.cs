@@ -6,13 +6,15 @@ using ca.codepanda;
 
 public class SceneChanges : MonoBehaviour
 {
+    public string _sceneName = "CodePanda2018 - Alex";
+
     private void Update()
     { 
         for (int i = 0; i < 3; i++)
         {
             if (InputManager.Button_A(i))
             {
-                SceneManager.LoadScene("SceneJess");
+                SceneManager.LoadScene(_sceneName);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace ca.codepanda
 {
@@ -17,6 +18,7 @@ namespace ca.codepanda
         float _mapMidWidth;
         float _mapMidHeight;
 
+        private float _StormDelay = 15f;
         public const float _maxStormDuration = 5f;
         private float _StormDuration = 0;
         public float _stormDuration
@@ -40,10 +42,6 @@ namespace ca.codepanda
             StartAStorm();
         }
 
-        public void Init()
-        {
-        }
-
         public void StartAStorm()
         {
             StartCoroutine(Storm());
@@ -60,6 +58,15 @@ namespace ca.codepanda
             _stormDuration = _maxStormDuration;
             float _thunderDelay = 0;
 
+            int numberOfItemsToSpawn = References.Instance._itemManager._itemsToSpawn;
+            Stack<float> timeToSpawnItems = new Stack<float>();
+            float lastTimeItemSpawn = 0.1f;
+            for (int i = 0; i < numberOfItemsToSpawn; i++)
+            {
+                timeToSpawnItems.Push(Random.Range(lastTimeItemSpawn, _stormDuration));
+                lastTimeItemSpawn = timeToSpawnItems.Peek();
+            }
+
             while (_stormDuration > 0)
             {
                 if (_thunderDelay <= 0)
@@ -71,8 +78,15 @@ namespace ca.codepanda
                     GameObject go = Instantiate(_thunderPrefab, References.Instance._dynamic);
                     go.transform.position = ThunderHit;
 
-                    _thunderDelay = Random.Range(.01f, 1f);
+                    _thunderDelay = Random.Range(.01f, .5f);
                 }
+
+                if (timeToSpawnItems.Count > 0 && _stormDuration <= timeToSpawnItems.Peek())
+                {
+                    References.Instance._itemManager.SpawnNewItem();
+                    timeToSpawnItems.Pop();
+                }
+
                 _stormDuration -= Time.deltaTime;
                 _thunderDelay -= Time.deltaTime;
                 yield return null;
@@ -83,7 +97,7 @@ namespace ca.codepanda
                 OnStormEnd();
             }
 
-            yield return new WaitForSeconds(15f);
+            yield return new WaitForSeconds(_StormDelay);
             StartAStorm();
         }
     }
