@@ -44,13 +44,14 @@ namespace ca.codepanda
 
         private IEnumerator FirstStorm()
         {
-            yield return new WaitForSeconds(_StormDelay);
+            yield return new WaitForSeconds(5f);
             StartAStorm();
         }
 
         public void StartAStorm()
         {
             StartCoroutine(Storm());
+            GetComponent<AudioSource>().Play();
             References.Instance._screenShake.BasicShake();
         }
 
@@ -111,6 +112,16 @@ namespace ca.codepanda
         {
             StopAllCoroutines();
             StartCoroutine(EndGameStormRoutine());
+            GetComponent<AudioSource>().Play();
+            References.Instance._screenShake.EndShake();
+            if (References.Instance._gameManager._scores[0] > References.Instance._gameManager._scores[1])
+            {
+                GetComponent<Animator>().SetInteger("state", 1);
+            }
+            else
+            {
+                GetComponent<Animator>().SetInteger("state", 2);
+            }
         }
 
         private IEnumerator EndGameStormRoutine()
@@ -134,7 +145,7 @@ namespace ca.codepanda
                     GameObject go = Instantiate(_thunderPrefab, References.Instance._dynamic);
                     go.transform.position = ThunderHit;
 
-                    _thunderDelay = Random.Range(.01f, .25f);
+                    _thunderDelay = Random.Range(.01f, .1f);
                 }
 
                 _stormDuration -= Time.deltaTime;
@@ -146,6 +157,52 @@ namespace ca.codepanda
             {
                 OnStormEnd();
             }
+        }
+
+        public void Tornado_Red_End()
+        {
+            _stormDuration = 0;
+            Destroy(References.Instance._itemManager._cauldrons[1].gameObject);
+            GameObject[] objs = GameObject.FindGameObjectsWithTag("Ingredient");
+            for(int i = 0; i < objs.Length; i++)
+            {
+                Destroy(objs[i]);
+            }
+
+            GameObject p2 = GameObject.Find("Player2");
+            GameObject p4 = GameObject.Find("Player4");
+
+            p2.GetComponent<CharController>().DisableAnim();
+            p4.GetComponent<CharController>().DisableAnim();
+
+            StartCoroutine(T_End(p2, p4));
+        }
+
+        public void Tornado_Blue_End()
+        {
+            _stormDuration = 0;
+            Destroy(References.Instance._itemManager._cauldrons[0].gameObject);
+            GameObject[] objs = GameObject.FindGameObjectsWithTag("Ingredient");
+            for (int i = 0; i < objs.Length; i++)
+            {
+                Destroy(objs[i]);
+            }
+
+            GameObject p1 = GameObject.Find("Player1");
+            GameObject p3 = GameObject.Find("Player3");
+
+            p1.GetComponent<CharController>().DisableAnim();
+            p3.GetComponent<CharController>().DisableAnim();
+
+            StartCoroutine(T_End(p1, p3));
+        }
+
+        private IEnumerator T_End(GameObject p2, GameObject p4)
+        {
+            yield return new WaitForSeconds(1f);
+
+            p2.SetActive(false);
+            p4.SetActive(false);
         }
     }
 }

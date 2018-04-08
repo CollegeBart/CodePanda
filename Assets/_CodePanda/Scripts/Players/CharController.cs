@@ -26,6 +26,9 @@ namespace ca.codepanda
         public Rigidbody2D _rigidbody;
         public Animator _animator;
         private Transform _heldObject;
+        public AudioSource _dashSound;
+        public AudioSource _punchSound;
+        public AudioSource _shockedSound;
 
         private float _xVelocity = 0;
         private float _yVelocity = 0;
@@ -57,11 +60,11 @@ namespace ca.codepanda
         {
             _buttonADown = InputManager.Button_A(_playerIndex);
             _buttonXDown = InputManager.Button_X(_playerIndex);
-            _rightTriggerDown = InputManager.Trigger_Right(_playerIndex);
+            _rightTriggerDown = InputManager.Button_B(_playerIndex);
 
             if (_buttonADown)
                 Dash();
-            if (InputManager.Trigger_Right_Release(_playerIndex))
+            if (InputManager.Button_B_Release(_playerIndex))
                 ReleaseItem(false);          
             
             SetSpriteDirection(_xVelocity, _yVelocity, _velocity.magnitude);
@@ -127,6 +130,7 @@ namespace ca.codepanda
             if (!_dashOnCooldown  && !_isDisabled)
             {
                 _dashOnCooldown = true;
+                _dashSound.Play();
                 var vectorPush = (_velocity).normalized;
                 _rigidbody.AddForce(vectorPush * CharactersManager._dashSpeed);
                 ReleaseItem(true);
@@ -149,6 +153,7 @@ namespace ca.codepanda
                     if (_buttonXDown && _heldObject == null)
                     {
                         var vectorPush = (collision.transform.position - transform.position).normalized;
+                        _punchSound.Play();
                         collision.GetComponent<Rigidbody2D>().AddForce(vectorPush * CharactersManager._pushSpeed);
                         collision.GetComponent<CharController>().ReleaseItem(true);
                     }
@@ -176,6 +181,7 @@ namespace ca.codepanda
 
         private IEnumerator PushItem(Collider2D collision)
         {
+            _punchSound.Play();
             var vectorPush = (collision.transform.position - transform.position).normalized;
             collision.GetComponentInParent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeRotation;
             collision.GetComponentInParent<Rigidbody2D>().AddForce(vectorPush * CharactersManager._pushSpeed);
@@ -189,6 +195,7 @@ namespace ca.codepanda
             {
                 if (collision.tag.Contains("Thunder"))
                 {
+                    _shockedSound.Play();
                     if (_disabledRoutine != null)
                     {
                         StopCoroutine(_disabledRoutine);

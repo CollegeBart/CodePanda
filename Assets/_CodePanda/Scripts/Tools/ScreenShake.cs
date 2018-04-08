@@ -40,6 +40,11 @@ public class ScreenShake : MonoBehaviour {
         m_ShakeDuration = _BasicShakeDuration;
     }
 
+    public void EndShake()
+    {
+        m_ShakeDuration = _BasicShakeDuration * 2;
+    }
+
     void Update()
     {
         if (m_ShakeDuration > 0)

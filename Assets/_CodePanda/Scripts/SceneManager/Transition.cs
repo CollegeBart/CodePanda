@@ -19,6 +19,8 @@ namespace ca.codepanda
         public Sprite _startToStart;
         public Sprite _aToPlay;
         public Sprite _bToQuit;
+        public AudioSource StartButtonSound;
+        public AudioSource PayerJoinSound;
 
         private void Start()
         {
@@ -31,7 +33,7 @@ namespace ca.codepanda
 
         void Update ()
 		{
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
 			    if (InputManager.Button_A(i))
                 {
@@ -91,11 +93,13 @@ namespace ca.codepanda
             }
             _state = 1;
             _anim.SetInteger("state", 1);
+            StartButtonSound.Play();
         }
 
         private void MenuOut()
         {
             _state = 0;
+            References.Instance.state = 0;
             _anim.SetInteger("state", 0);
         }
 
@@ -113,6 +117,7 @@ namespace ca.codepanda
 
         private void Activate(int index)
         {
+            PayerJoinSound.Play();
             _rends[index].sprite = _bToQuit;
             _activated[index] = true;
             _animators[index].Activate();

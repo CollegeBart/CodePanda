@@ -5,7 +5,7 @@ namespace ca.codepanda
 {
     public class CharactersManager : MonoBehaviour
     {
-        public const float _dashCooldown = 3f;
+        public const float _dashCooldown = 2f;
         public const int _dashSpeed = 1500;
         public const int _pushSpeed = 2500;
 

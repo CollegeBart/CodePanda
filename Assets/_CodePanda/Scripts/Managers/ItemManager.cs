@@ -57,6 +57,8 @@ namespace ca.codepanda
         {
             int rewardScore = 0;
             int teamIndex = (playerIndex) % 2;
+            cauldron.GetComponent<AudioSource>().Play();
+            cauldron.GetComponent<Animator>().SetTrigger("Drop");
             if (cauldron == _cauldrons[teamIndex])
             {
                 if (type._type == _recipes[0]._ingredients[_cauldronIndexes[teamIndex]] || type._type == Items.GoldenPanda)
@@ -107,9 +109,12 @@ namespace ca.codepanda
 
         internal void SpawnGoldenPanda()
         {
-            GameObject go = Instantiate(GoldenPandaPrefab, References.Instance._dynamic);
-            int _newPos = 10;
-            go.transform.position = _spawnPositions[_newPos].position;
+            if (GameObject.Find("Panda (clone)") == null)
+            {
+                GameObject go = Instantiate(GoldenPandaPrefab, References.Instance._dynamic);
+                int _newPos = 10;
+                go.transform.position = _spawnPositions[_newPos].position;
+            }
         }
 
         public void SpawnNewItem()
@@ -153,6 +158,7 @@ namespace ca.codepanda
                     }
                     var spritePlaceholder = recipesSpriteContainer.transform.Find("PlaceHolderIngredient" + (i + 1));
                     var spriteRenderer = spritePlaceholder.gameObject.GetComponent<SpriteRenderer>();
+                    spriteRenderer.sprite = ingredientSprite;
                 }
             }
         }
